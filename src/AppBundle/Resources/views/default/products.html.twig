@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2>Liste des produits</h2>
+    <ul>
+        <li><a href="{{ path('product', {'colonne':'price', 'order':'desc' }) }}">Prix descendants</a></li>
+        <li><a href="{{ path('product', {'colonne':'price', 'order':'asc' }) }}">Prix ascendants</a></li>
+        <li><a href="{{ path('product', {'colonne':'title', 'order':'desc' }) }}">Titre descendants</a></li>
+        <li><a href="{{ path('product', {'colonne':'title', 'order':'asc' }) }}">Titre ascendants</a></li>
+    </ul>
+    <ul>
+    {% for product in products %}
+        <li><a href="{{ path('show_product', {'id': product.id}) }}">{{ product.title }} - {{ product.price }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

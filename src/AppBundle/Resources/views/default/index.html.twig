@@ -1,0 +1,14 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block body %}
+    Bonjour {{ name }} - {{ age }}
+    {% for i in tab %}
+        <p>{{ i }}</p>
+    {% endfor %}
+{% endblock %}
+{% block js %}
+    <script>
+        var nom = window.prompt("Votre nom: ");
+        document.location.href = '{{ url }}/' + nom;
+    </script>
+{% endblock %}
