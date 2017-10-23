@@ -1,6 +1,8 @@
-{% extends "base.html.twig" %}
+{% extends "@App/layout.html.twig" %}
 
 {% block body %}
+
+    {{ parent() }}
     <h2>Liste des produits</h2>
     <ul>
         <li><a href="{{ path('product', {'colonne':'price', 'order':'desc' }) }}">Prix descendants</a></li>

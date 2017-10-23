@@ -41,56 +41,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("create_product", name="create_product")
-     */
-    public function createProduct(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $p = new Product();
-        $p->setTitle("Livre")->setDescription("Un livre fort intéressant")->setPrice(42.12);
-
-        $em->persist($p);
-        $em->flush();
-
-        return new Response("Saved ID " . $p->getId());
-    }
-
-    /**
-     * @Route("show_product/{id}", name="show_product")
-     */
-    public function showProduct($id){
-        $p = $this->getDoctrine()->getRepository('AppBundle:Product')
-        ->find($id);
-        return $this->render("@App/default/show_product.html.twig", ["p" => $p]);
-    }
-
-    /**
-     * @Route("products.{_format}",
-     *     name="product",
-     *     requirements={"_format": "html|json"},
-     *     defaults={"_format": "html"}
-     * )
-     */
-    public function getProducts(Request $request){
-        $colonne = $request->query->get("colonne");
-        $order = $request->query->get("order");
-        if (!$colonne)
-            $colonne = 'price';
-        if(!$order)
-            $order = 'asc';
-        // Trier par prix et par titre
-        $products = $this->getDoctrine()->getRepository('AppBundle:Product')
-            ->findAllAsArray($colonne, $order);
-
-        if ($request->getRequestFormat() === 'json')
-            return new JsonResponse($products);
-
-        return $this->render("@App/default/products.html.twig", [
-            "products" => $products,
-            'url' => $this->generateUrl('product')]);
-    }
-
-    /**
      * @Route("protegee", name="protegee")
      */
     public function routeSecurisee(){

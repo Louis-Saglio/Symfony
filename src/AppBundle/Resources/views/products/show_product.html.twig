@@ -1,0 +1,6 @@
+{% extends "@App/layout.html.twig" %}
+
+{% block body %}
+    {{ parent() }}
+    {{ p.title }} - {{ p.price }}€ - {{ p.description }}
+{% endblock %}
