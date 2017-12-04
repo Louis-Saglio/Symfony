@@ -10,10 +10,22 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findAllAsArray($colonne, $ordre) {
-        $query = $this->createQueryBuilder('p')
+    public function findAllAsArray($colonne, $ordre, $keyword=null) {
+        $qb = $this->createQueryBuilder('p');
+        if (!empty($keyword)) {
+            $qb->where('p.title LIKE :keyword')
+                ->setParameter('keyword', '%'.$keyword.'%');
+        }
+        $query = $qb
             ->orderBy('p.'.$colonne, $ordre)
-//            ->andWhere('p.price > 50')
+            ->getQuery();
+        return $query->getArrayResult();
+    }
+
+    public function search($keyword)
+    {
+        $query = $this->createQueryBuilder('p')->
+            where('p.title LIKE \'%' . $keyword . '%\'')
             ->getQuery();
         return $query->getArrayResult();
     }

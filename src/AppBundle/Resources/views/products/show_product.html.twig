@@ -2,5 +2,6 @@
 
 {% block body %}
     {{ parent() }}
+    <h1>{{ 'product.welcome'|trans }}</h1>
     {{ p.title }} - {{ p.price }}€ - {{ p.description }}
 {% endblock %}

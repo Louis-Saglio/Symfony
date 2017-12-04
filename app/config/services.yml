@@ -33,3 +33,9 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    admin.product:
+            class: AppBundle\Admin\ProductAdmin
+            arguments: [~, AppBundle\Entity\Product, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: Product }
+            public: true

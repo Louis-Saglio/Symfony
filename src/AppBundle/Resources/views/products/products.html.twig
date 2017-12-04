@@ -3,16 +3,20 @@
 {% block body %}
 
     {{ parent() }}
-    <h2>Liste des produits</h2>
-    <ul>
-        <li><a href="{{ path('product', {'colonne':'price', 'order':'desc' }) }}">Prix descendants</a></li>
-        <li><a href="{{ path('product', {'colonne':'price', 'order':'asc' }) }}">Prix ascendants</a></li>
-        <li><a href="{{ path('product', {'colonne':'title', 'order':'desc' }) }}">Titre descendants</a></li>
-        <li><a href="{{ path('product', {'colonne':'title', 'order':'asc' }) }}">Titre ascendants</a></li>
-    </ul>
-    <ul>
+    <h2>{{ 'product.products'|trans }}</h2>
+    {{ form_start(form, {'attr':{'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    <table class="table table-hover table-bordered table-responsive">
+        <tr>
+            <td><a href="{{ path('product', {'colonne':'title', 'order':order }) }}">{{ 'product.title'|trans }}</a></td>
+            <td><a href="{{ path('product', {'colonne':'price', 'order':order }) }}">{{ 'product.price'|trans }}</a></td>
+        </tr>
     {% for product in products %}
-        <li><a href="{{ path('show_product', {'id': product.id}) }}">{{ product.title }} - {{ product.price }}</a></li>
+        <tr>
+            <td><a href="{{ path('show_product', {'id': product.id}) }}">{{ product.title }}</a></td>
+            <td>{{ product.price }}</td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 {% endblock %}

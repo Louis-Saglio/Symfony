@@ -13,7 +13,7 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("haha", name="homepage")
      */
     public function indexAction(Request $request)
     {
@@ -45,5 +45,13 @@ class DefaultController extends Controller
      */
     public function routeSecurisee(){
         return new Response("Page protégée");
+    }
+
+    /**
+     * @Route("translate/{langue}", name="translate")
+     */
+    public function translate(Request $request, $langue){
+        $request->setLocale($langue);
+        return $this->redirect($request->headers->get('referer'));
     }
 }

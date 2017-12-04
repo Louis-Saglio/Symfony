@@ -1,8 +1,13 @@
 {% extends "@App/layout.html.twig" %}
 
+{% form_theme form 'form_table_layout.html.twig' %}
+
 {% block body %}
     {{ parent() }}
+    {#{{ form_start(form, {'attr':{'novalidate': 'novalidate'}}) }}#}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.price) }}
     {{ form_end(form) }}
 {% endblock %}

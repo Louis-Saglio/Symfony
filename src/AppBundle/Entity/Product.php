@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -23,21 +24,21 @@ class Product
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message = "Le titre ne peut pas être vide !")
      * @ORM\Column(name="title", type="string", length=50)
      */
     private $title;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
      * @var float
-     *
+     * @Assert\Range(min="0", minMessage="Trop petit")
+     * @Assert\Type("float", message="Doit être un float")
      * @ORM\Column(name="price", type="decimal", precision=10)
      */
     private $price;

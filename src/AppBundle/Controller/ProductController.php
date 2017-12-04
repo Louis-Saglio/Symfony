@@ -10,15 +10,13 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Product;
+use AppBundle\Form\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -37,6 +35,7 @@ class ProductController extends Controller
      *     requirements={"_format": "html|json"},
      *     defaults={"_format": "html"}
      * )
+     * @Route("/", name="homepage")
      */
     public function getProducts(Request $request){
         $colonne = $request->query->get("colonne");
@@ -44,16 +43,43 @@ class ProductController extends Controller
         if (!$colonne)
             $colonne = 'price';
         if(!$order)
+            $order = 'desc';
+
+        $form = $this->createFormBuilder()
+            ->add('keywords', TextType::class)
+            ->add('save', SubmitType::class)
+            ->getForm();
+        $form->handleRequest($request);
+
+        $session = $request->getSession();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $keyword = $form->getData()["keywords"];
+        } else if ($session->get('keyword')) {
+            $keyword = $session->get('keyword');
+        } else {
+            $keyword = '';
+        }
+        $session->set("keyword", $keyword);
+
+        $products = $this->getDoctrine()
+            ->getRepository('AppBundle:Product')
+            ->findAllAsArray($colonne, $order, $keyword);
+
+        if ($order == 'asc') {
+            $order = 'desc';
+        } else {
             $order = 'asc';
-        $products = $this->getDoctrine()->getRepository('AppBundle:Product')
-            ->findAllAsArray($colonne, $order);
+        }
 
         if ($request->getRequestFormat() === 'json')
             return new JsonResponse($products);
 
         return $this->render("@App/products/products.html.twig", [
-            "products" => $products,
-            'url' => $this->generateUrl('product')]);
+            'products' => $products,
+            'url' => $this->generateUrl('product'),
+            'order' => $order,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -62,12 +88,7 @@ class ProductController extends Controller
     public function createProduct(Request $request)
     {
           $p = new Product();
-          $form = $this->createFormBuilder($p)
-              ->add('title', TextType::class)
-              ->add('price', MoneyType::class)
-              ->add('description', TextareaType::class)
-              ->add('submit', SubmitType::class)
-              ->getForm();
+          $form = $this->createForm(ProductType::class, $p);
 
           $form->handleRequest($request);
           if ($form->isSubmitted() && $form->isValid()){

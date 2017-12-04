@@ -1,0 +1,9 @@
+product:
+  welcome: Welcome
+  products: Product list
+  order_by_price: Order by price
+  order_by_title: Order by title
+  title: Title
+  price: Price
+  description: Description
+  search: Keyword

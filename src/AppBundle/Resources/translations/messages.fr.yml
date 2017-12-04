@@ -1,0 +1,9 @@
+product:
+  welcome: Bonjour
+  products: Liste des produits
+  order_by_price: Trier par prix
+  order_by_title: Trier par titre
+  title: Titre
+  price: Prix
+  description: Description
+  search: Mot-clé
