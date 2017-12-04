@@ -18,7 +18,7 @@ class ProductAdmin extends AbstractAdmin
 {
     protected function ConfigureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add('title', 'description', 'price');
+        $formMapper->add('title', 'text');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -29,6 +29,6 @@ class ProductAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name');
+        $listMapper->addIdentifier('title');
     }
 }
